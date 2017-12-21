@@ -3,6 +3,8 @@ const logger = require('koa-morgan')
 const cors = require('koa2-cors')
 const config = require('./config')
 
+const koaRequest = require('koa-http-request')
+
 const routes = require('./routes')
 
 const app = new Koa()
@@ -12,6 +14,12 @@ app.use(cors({
   origin: '*',
   allowMethods: ['GET', 'POST', 'DELETE'],
   allowHeaders: ['Content-Type'],
+}))
+
+app.use(koaRequest({
+  json: true, //automatically parsing of JSON response 
+  timeout: 3000,    //3s timeout 
+  host: 'https://api.github.com'
 }))
 
 app.use(routes.routes())
