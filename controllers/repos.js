@@ -22,28 +22,17 @@ exports.getCommits = async ctx => {
   const params = pathname.split('/');
   const owner = 'facebook'
   const repo = params[3];
-  // try {
-  //   let commits = await ctx.get(`/repos/${owner}/${repo}/commits`, null, {
-  //     'User-Agent': 'koa-http-request'
-  //   });
-  //   if (!commits) {
-  //     return ctx.response.status = 400
-  //   }
-  //   const lastCommits = commits.splice(0, 100)
-  //   ctx.body = lastCommits
-  // } catch (err) {
-  //   console.error(err)
-  // }
   try {
-    let commits = await ctx.get(`/search/commits?q=repo:fecebook/react&page=1&per_page=1`, null, {
-      'User-Agent': 'koa-http-request',
-      'Accept': 'application/vnd.github.cloak-preview'
+    let commits = await ctx.get(`/repos/${owner}/${repo}/commits`, null, {
+      'User-Agent': 'koa-http-request'
     });
     if (!commits) {
       return ctx.response.status = 400
     }
-    // const lastCommits = commits.splice(0, 100)
-    ctx.body = commits
+    const lastCommits = commits.splice(0, 100)
+    ctx.body = {
+      commits: lastCommits
+    }
   } catch (err) {
     console.error(err)
   }
